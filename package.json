@@ -2,7 +2,7 @@
   "name": "media-bazaar",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "ts/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,5 +18,8 @@
   "homepage": "https://github.com/gustass5/media-bazaar#readme",
   "dependencies": {
     "tailwindcss": "^1.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
   }
 }
