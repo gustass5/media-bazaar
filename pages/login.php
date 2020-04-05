@@ -14,10 +14,6 @@ if(isset($_POST['login'])){
     $email = !empty($_POST['email']) ? trim($_POST['email']) : null;
     $passwordAttempt = !empty($_POST['password']) ? trim($_POST['password']) : null;
 
-    if($email === null){
-        $error = 'No email provided';
-        exit;
-    }
     $sql = 'SELECT emp_id, emp_email, AES_DECRYPT(emp_password, "secret") as password FROM employee_personal WHERE emp_email = :email';
     
     $statement = $pdo->prepare($sql);
@@ -27,17 +23,19 @@ if(isset($_POST['login'])){
     $user = $statement->fetch(PDO::FETCH_ASSOC);
     if($user === false){
         $error = 'Incorrect email/password combination';
-        exit; 
+    }else{
+        if($passwordAttempt === $user['password']){
+            $userToken = bin2hex(openssl_random_pseudo_bytes(24));
+            $_SESSION['user_id'] = $user['emp_id'];
+            $_SESSION['user_token'] = $userToken;
+            $_SESSION['logged_in'] = time();
+            header('Location: ../index.php');
+            exit;
+        }else{
+            $error = 'Incorrect email/password combination';
+        }
     }
-    if($passwordAttempt === $user['password']){
-        $userToken = bin2hex(openssl_random_pseudo_bytes(24));
-        $_SESSION['user_id'] = $user['emp_id'];
-        $_SESSION['user_token'] = $userToken;
-        $_SESSION['logged_in'] = time();
-        header('Location: ../index.php');
-        exit;
-    }
-    $error = 'Incorrect username / password combination!';
+
 }
 ?>
 
@@ -58,6 +56,7 @@ if(isset($_POST['login'])){
                         <label class='mb-3' for="password">Password</label>
                         <input class='mb-3 border text-lg' class='mb-1' type="password" id="password" name="password">
                         <button class='p-2 mb-2 bg-blue-500 text-white hover:bg-blue-400' type="submit" name="login">Login</button>
+                        <?php if(!empty($error)) echo htmlspecialchars($error); ?>
                     </form>
                 </section>
         </main>
