@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+
+require 'helpers.php';
+
+checkLoggedIn();
+
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
