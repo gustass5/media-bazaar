@@ -2,7 +2,7 @@
 
 session_start();
 
-require 'helpers.php';
+require_once 'helpers.php';
 
 checkLoggedIn();
 

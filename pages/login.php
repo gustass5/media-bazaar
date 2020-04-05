@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require '../core/config.php';
-require '../helpers.php';
+require_once '../core/config.php';
+require_once '../helpers.php';
 
 if(checkLoggedIn(false)){
     header('Location: ../index.php');
